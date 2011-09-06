@@ -6,6 +6,7 @@ window.phantomLimb = (function() {
 	debug = false;
 
 	var supportsNativeTouch = 'ontouchstart' in document.createElement('button');
+	var touchIdentifier = null;
 	
 	// This will fake an arbitrary event on a node and add in the extra touch-related properties
 	var fireTouchEvent = function(originalEvent, newType) {
@@ -16,7 +17,10 @@ window.phantomLimb = (function() {
 				originalEvent.button, originalEvent.relatedTarget
 		);
 		
-		if (!('identifier' in newEvent)) newEvent.identifier = new Date().getTime() % Math.pow(2, 31);
+		if (!touchIdentifier) {
+			touchIdentifier = new Date().getTime() % Math.pow(2, 31);
+		}
+		if (!('identifier' in newEvent)) newEvent.identifier = touchIdentifier;
 		
 		// Touch events have a touches array, which contains kinda-sub-event objects
 		// In this case we'll only need the one
@@ -64,6 +68,7 @@ window.phantomLimb = (function() {
 		var mouseIsDown = false;
 
 		document.addEventListener('mousedown', function(e) {
+			touchIdentifier = null;
 			convertPropped(e.target, 'touchstart');
 			convertInlined(e.target, 'touchstart');
 
