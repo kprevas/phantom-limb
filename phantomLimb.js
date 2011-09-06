@@ -16,7 +16,7 @@ window.phantomLimb = (function() {
 				originalEvent.button, originalEvent.relatedTarget
 		);
 		
-		if (!('identifier' in newEvent)) newEvent.identifier = new Date().getTime();
+		if (!('identifier' in newEvent)) newEvent.identifier = new Date().getTime() % Math.pow(2, 31);
 		
 		// Touch events have a touches array, which contains kinda-sub-event objects
 		// In this case we'll only need the one
