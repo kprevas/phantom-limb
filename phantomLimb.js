@@ -25,7 +25,13 @@ window.phantomLimb = (function() {
 		
 		// Touch events have a touches array, which contains kinda-sub-event objects
 		// In this case we'll only need the one
-		if (!('touches' in newEvent)) newEvent.touches = newEvent.targetTouches = [newEvent];
+		if (!('touches' in newEvent)) {
+			if (newType == 'touchend') {
+				newEvent.touches = newEvent.targetTouches = [];
+			} else {
+				newEvent.touches = newEvent.targetTouches = [newEvent];
+			}
+		}
 		if (!('changedTouches' in newEvent)) newEvent.changedTouches = [newEvent];
 
 		// And and they have "page" coordinates, which I guess are just like screen coordinates
